@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create((new Comment())->getTable(), function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();
+            $table->foreignIdFor(Post::class)->constrained()->restrictOnDelete();
+            $table->longText('body');
             $table->timestamps();
         });
     }
