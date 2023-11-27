@@ -21,5 +21,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         JsonResource::withoutWrapping();
+
+        if (config('app.prevent_lazy_loading')) {
+            \Illuminate\Database\Eloquent\Model::preventLazyLoading();
+        }
+
+        if (config('app.should_be_strict')) {
+            \Illuminate\Database\Eloquent\Model::shouldBeStrict();
+        }
     }
 }

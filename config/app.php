@@ -187,4 +187,13 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /**
+     * Enable prevent lazy loading for development environment
+     */
+    'prevent_lazy_loading' => env('PREVENT_LAZY_LOADING', false),
+
+    /**
+     * Enable should be strict for development environment
+     */
+    'should_be_strict' => env('SHOULD_BE_STRICT', false),
 ];
