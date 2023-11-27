@@ -6,12 +6,15 @@
                     <span class="text-bold text-lg">{{ post.title }}</span>
                 </li>
             </ul>
+
+            <Pagination />
         </Container>
     </AppLayout>
 </template>
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue"
 import Container from "@/Components/Container.vue"
+import Pagination from "@/Components/Pagination.vue"
 
 defineProps(['posts']);
 </script>
