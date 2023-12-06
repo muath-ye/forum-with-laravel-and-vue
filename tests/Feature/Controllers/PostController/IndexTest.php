@@ -2,9 +2,6 @@
 
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia;
 
 use function Pest\Laravel\get;
@@ -21,19 +18,7 @@ it('passes posts to the view', function () {
     // Because it takes time to actually build those models...
     $posts = Post::factory(3)->create();
 
-    TestResponse::macro('assertHasResource', function (string $key, JsonResource $resource) {
-        return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->hasResource($key, $resource));
-    });
-
-    TestResponse::macro('assertHasPaginatedResource', function (string $key, ResourceCollection $resource) {
-        return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->hasPaginatedResource($key, $resource));
-    });
-
     get(route('posts.index'))
         ->assertHasResource('post', PostResource::make($posts->first()))
         ->assertHasPaginatedResource('posts', PostResource::collection($posts->reverse()));
-        // ->assertInertia(fn (AssertableInertia $inertia) => $inertia
-        //     // ->hasResource('post', PostResource::make($posts->first()))
-        //     ->hasPaginatedResource('posts', PostResource::collection($posts->reverse()))
-        // );
 });

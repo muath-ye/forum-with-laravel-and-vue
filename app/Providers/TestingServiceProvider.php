@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia;
 
 class TestingServiceProvider extends ServiceProvider
@@ -57,6 +58,14 @@ class TestingServiceProvider extends ServiceProvider
                 ->toEqual($compiledResource);
 
             return $this;
+        });
+
+        TestResponse::macro('assertHasResource', function (string $key, JsonResource $resource) {
+            return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->hasResource($key, $resource));
+        });
+
+        TestResponse::macro('assertHasPaginatedResource', function (string $key, ResourceCollection $resource) {
+            return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->hasPaginatedResource($key, $resource));
         });
     }
 }
