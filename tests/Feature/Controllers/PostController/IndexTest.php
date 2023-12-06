@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 use Inertia\Testing\AssertableInertia;
 
 use function Pest\Laravel\get;
@@ -12,8 +14,10 @@ it('should return the correct component', function () {
 });
 
 it('passes posts to the view', function () {
+    // I've create as much data as required for the test, and no more.
+    // Because it takes time to actually build those models...
+    $posts = Post::factory(3)->create();
+
     get(route('posts.index'))
-        ->assertInertia(fn (AssertableInertia $inertia) => $inertia
-            ->has('posts')
-        );
+        ->assertHasPaginatedResource('posts', PostResource::collection($posts->reverse()));
 });

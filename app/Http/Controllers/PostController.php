@@ -11,10 +11,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : \Inertia\Response
     {
         return inertia('Posts/Index', [
-            'posts' => PostResource::collection(Post::with('user')->paginate()),
+            'posts' => PostResource::collection(Post::latest()->latest('id')->paginate()),
         ]);
     }
 
