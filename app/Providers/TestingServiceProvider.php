@@ -37,11 +37,8 @@ class TestingServiceProvider extends ServiceProvider
 
         // Create 'hasPaginatedResource' on 'AssertableInertia' class using macro.
         AssertableInertia::macro('hasPaginatedResource', function (string $key, ResourceCollection $resource) {
-            $this->has($key);
-            expect($this->prop($key))
-                ->toHaveKeys(['data', 'links', 'meta']) // this is enough to check if the pagination data is passed.
-                ->data
-                ->toEqual($resource->response()->getData(true));
+            $this->hasResource("{$key}.data", $resource);
+            expect($this->prop($key))->toHaveKeys(['data', 'links', 'meta']);
 
             return $this;
         });
