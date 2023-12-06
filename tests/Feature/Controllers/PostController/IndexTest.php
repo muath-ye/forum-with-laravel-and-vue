@@ -31,6 +31,24 @@ it('passes posts to the view', function () {
         return $this;
     });
 
+    // Create 'hasPaginatedResource' on 'AssertableInertia' class using macro.
+    AssertableInertia::macro('hasPaginatedResource', function (string $key, ResourceCollection $resource) {
+        $assertableInertia = $this->toArray();
+        $props = $assertableInertia['props'];
+
+        $compiledResource = $resource->response()->getData(true);
+
+        expect($props)
+            ->toHaveKey($key, message: "Key \"{$key}\" not passed as a property to Inertia.")
+            ->and($props[$key])
+            // ->dd() // to check the pagination data.
+            ->toHaveKeys(['data', 'links', 'meta']) // this is enough to check if the pagination data is passed.
+            ->data
+            ->toEqual($compiledResource);
+
+        return $this;
+    });
+
     // I've create as much data as required for the test, and no more.
     // Because it takes time to actually build those models...
     $posts = Post::factory(3)->create();
@@ -38,6 +56,7 @@ it('passes posts to the view', function () {
     get(route('posts.index'))
         ->assertInertia(fn (AssertableInertia $inertia) => $inertia
             ->hasResource('post', PostResource::make($posts->first()))
+            ->hasPaginatedResource('posts', PostResource::collection($posts->reverse()))
         );
 });
 
