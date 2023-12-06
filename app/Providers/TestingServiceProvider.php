@@ -29,15 +29,8 @@ class TestingServiceProvider extends ServiceProvider
 
         // Create 'hasResource' on 'AssertableInertia' class using macro.
         AssertableInertia::macro('hasResource', function (string $key, JsonResource $resource) {
-            $assertableInertia = $this->toArray();
-            $props = $assertableInertia['props'];
-
-            $compiledResource = $resource->response()->getData(true);
-
-            expect($props)
-                ->toHaveKey($key, message: "Key \"{$key}\" not passed as a property to Inertia.")
-                ->and($props[$key])
-                ->toEqual($compiledResource);
+            $this->has($key);
+            expect($this->prop($key))->toEqual($resource->response()->getData(true));
 
             return $this;
         });
