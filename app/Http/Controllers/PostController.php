@@ -11,9 +11,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : \Inertia\Response
     {
         return inertia('Posts/Index', [
+            'post' => PostResource::make(Post::first()),
             'posts' => PostResource::collection(Post::with('user')->paginate()),
         ]);
     }
