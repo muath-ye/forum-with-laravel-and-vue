@@ -15,6 +15,7 @@ it('passes posts to the view', function () {
     // I've create as much data as required for the test, and no more.
     // Because it takes time to actually build those models...
     $posts = Post::factory(3)->create();
+    $posts->load('user');
 
     get(route('posts.index'))
         ->assertHasPaginatedResource('posts', PostResource::collection($posts->reverse()));
