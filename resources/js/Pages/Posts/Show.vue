@@ -13,7 +13,7 @@
                         <Comment :comment="comment" />
                     </li>
                 </ul>
-                <Pagination :meta="comments.meta"/>
+                <Pagination :meta="comments.meta" />
             </div>
         </Container>
     </AppLayout>
